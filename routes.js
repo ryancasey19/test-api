@@ -9,8 +9,18 @@ const router = app => {
     app.get('/broms', (request, response) => {
         pool.query('SELECT * FROM bromileys', (error, result) => { 
             if (error) throw error;
+            const data = [];
+            for(var i = 0; i < result.length; i++){
+                const brom = {};
+                brom["type"] = "brom";
+                brom["id"] = result[i].id;
+                const attr = {};
+                attr["name"] = result[i].name;
+                brom["attributes"] = attr;
+                data.push(brom);
+            }
             const json = {};
-            json["data"] = result;
+            json["data"] = data;
             response.json(json);
         });
     });
