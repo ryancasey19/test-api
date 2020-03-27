@@ -6,14 +6,16 @@ const router = app => {
             message: 'Massage'
         });
     });
-    app.get('/brom', (request, response) => {
+    app.get('/broms', (request, response) => {
         pool.query('SELECT * FROM bromileys', (error, result) => { 
             if (error) throw error;
-            response.send(result);
+            const json = {};
+            json["data"] = result;
+            response.json(json);
         });
     });
     //display a single brom by id
-    app.get('/brom/:id', (request, response) => {
+    app.get('/broms/:id', (request, response) => {
         const id = request.params.id;
         pool.query('SELECT * FROM bromileys WHERE id = ?', id, (error, result) => {
             if (error) throw error;
@@ -21,14 +23,14 @@ const router = app => {
         });
     });
     //add a brom
-    app.post('/brom', (request, response) => {
+    app.post('/broms', (request, response) => {
         pool.query('INSERT INTO bromileys SET ?', request.body, (error, result) => {
             if(error) throw error;
             response.status(201).send(`Brom added with ID: ${result.insertId}`);
         });
     });
     //update an existing brom
-    app.put('/brom/:id', (request, response) => {
+    app.put('/broms/:id', (request, response) => {
         const id = request.params.id;
         pool.query('UPDATE bromileys SET ? WHERE id = ?', [request.body, id], (error, result) => {
             if(error)throw error;
@@ -36,7 +38,7 @@ const router = app => {
         });
     });
     //delete a brom
-    app.delete('/brom/:id', (request, response) => {
+    app.delete('/broms/:id', (request, response) => {
         const id = request.params.id;
         pool.query('DELETE FROM bromileys WHERE id = ?', id, (error, result) => {
             if(error) throw error;
