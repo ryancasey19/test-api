@@ -29,7 +29,15 @@ const router = app => {
         const id = request.params.id;
         pool.query('SELECT * FROM bromileys WHERE id = ?', id, (error, result) => {
             if (error) throw error;
-            response.send(result);
+            const brom = {};
+            brom["type"] = "brom";
+            brom["id"] = result[0].id;
+            const attr = {};
+            attr["name"] = result[0].name;
+            brom["attributes"] = attr;
+            const json = {};
+            json["data"] = brom;
+            response.send(json);
         });
     });
     //add a brom
